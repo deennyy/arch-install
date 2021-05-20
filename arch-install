@@ -1,8 +1,8 @@
 #!/bin/sh
 
-echo "this script will automatically setup arch, mostly follwing the official install guide, but with some tweaks/packages of mine installed too"
+echo "this script will automatically setup arch, mostly following the official install guide, but with some tweaks/packages of mine installed too"
 
-echo "this script should be run after you've chroot-ed into your install and have done all of the previous steps from the install guide"
+echo "this script should be run after you've chroot-ed into your install and have done all previous steps from the install guide"
 
 echo "it assumes you're installing to an EFI system with the ESP mounted at /boot/efi"
 
@@ -30,9 +30,13 @@ echo "127.0.0.1	localhost" >> /etc/hosts
 echo "::1	localhost" >> /etc/hosts
 echo "127.0.1.1	$hostname.localdomain	$hostname" >> /etc/hosts
 
+echo "installing networkmanager..." && sleep 5
+
 pacman -S --needed --noconfirm networkmanager
 
 systemctl enable NetworkManager
+
+echo "what should the root password be?"
 
 passwd
 
@@ -47,6 +51,8 @@ elif [ "$cpu" = "amd" ]; then
 else
     echo "accepted answers are intel/amd"
 fi
+
+echo "installing grub..." && sleep 5
 
 pacman -S --needed --noconfirm grub efibootmgr
 
@@ -64,8 +70,10 @@ read name
 
 useradd -m $name
 
+echo "what should his password be?"
+
 passwd $name
 
-echo "$name ALL=(ALL) ALL" >> /etc/sudoers.d/$name
+echo "$name ALL=(ALL) ALL" >> /etc/sudoers.d/$name # also credit to ermannoferrari for this
 
 echo "install finished, exit the chroot, unmount and reboot"

@@ -1,10 +1,8 @@
 #!/bin/sh
 
-echo "this script will automatically setup arch, mostly following the official install guide, but with some tweaks/packages of mine installed too"
+echo "this script will automatically setup arch (UEFI), mostly following the official install guide, but with some tweaks/packages of mine installed too"
 
 echo "this script should be run after you've chroot-ed into your install and have done all previous steps from the install guide"
-
-echo "it assumes you're installing to an EFI system with the ESP mounted at /boot/efi"
 
 echo "what is your timezone? format: Region/City"
 
@@ -52,11 +50,15 @@ else
     echo "accepted answers are intel/amd"
 fi
 
+echo "where is the ESP mounted? example: /boot/efi"
+
+read esp
+
 echo "installing grub..." && sleep 5
 
 pacman -S --needed --noconfirm grub efibootmgr
 
-grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
+grub-install --target=x86_64-efi --efi-directory=$esp --bootloader-id=GRUB
 
 grub-mkconfig -o /boot/grub/grub.cfg
 

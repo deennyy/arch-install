@@ -1,0 +1,71 @@
+#!/bin/sh
+
+echo "this script will automatically setup arch, mostly follwing the official install guide, but with some tweaks/packages of mine installed too"
+
+echo "this script should be run after you've chroot-ed into your install and have done all of the previous steps from the install guide"
+
+echo "it assumes you're installing to an EFI system with the ESP mounted at /boot/efi"
+
+echo "what is your timezone? format: Region/City"
+
+read timezone
+
+ln -sf /usr/share/zoneinfo/$timezone /etc/localtime
+
+hwclock --systohc
+
+sed -i '177s/.//' /etc/locale.gen # credit to ermannoferrari for this
+
+locale-gen
+
+echo "LANG=en_US.UTF-8" >> /etc/locale.conf
+
+echo "what should the hostname be?"
+
+read hostname
+
+echo "$hostname" >> /etc/hostname
+
+echo "127.0.0.1	localhost" >> /etc/hosts
+echo "::1	localhost" >> /etc/hosts
+echo "127.0.1.1	$hostname.localdomain	$hostname" >> /etc/hosts
+
+pacman -S --needed --noconfirm networkmanager
+
+systemctl enable NetworkManager
+
+passwd
+
+echo "what cpu do you have? (intel/amd)"
+
+read cpu
+
+if [ "$cpu" = "intel" ]; then
+    pacman -S --needed --noconfirm intel-ucode
+elif [ "$cpu" = "amd" ]; then
+    pacman -S --needed --noconfirm amd-ucode
+else
+    echo "accepted answers are intel/amd"
+fi
+
+pacman -S --needed --noconfirm grub efibootmgr
+
+grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
+
+grub-mkconfig -o /boot/grub/grub.cfg
+
+echo "installing additional packages..." && sleep 5
+
+pacman -S --needed --noconfirm base-devel linux-lts linux-lts-headers e2fsprogs dosfstools neovim man-db man-pages texinfo
+
+echo "what should the name of the your user be?"
+
+read name
+
+useradd -m $name
+
+passwd $name
+
+echo "$name ALL=(ALL) ALL" >> /etc/sudoers.d/$name
+
+echo "install finished, exit the chroot, unmount and reboot"

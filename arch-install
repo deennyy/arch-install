@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "this script will automatically setup arch (UEFI), mostly following the official install guide, but with some tweaks/packages of mine installed too"
+echo "this script will automatically set up arch (UEFI), mostly following the official install guide, but with some tweaks/packages of mine installed too"
 
 echo "this script should be run after you've chroot-ed into your install and have done all previous steps from the install guide"
 

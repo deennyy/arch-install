@@ -62,9 +62,13 @@ grub-install --target=x86_64-efi --efi-directory=$esp --bootloader-id=GRUB
 
 grub-mkconfig -o /boot/grub/grub.cfg
 
+echo "list any additional packages you want installed in a space separated list, e.g. (htop neofetch ...)"
+
+read pkgs
+
 echo "installing additional packages..." && sleep 5
 
-pacman -S --needed --noconfirm base-devel linux-lts linux-lts-headers e2fsprogs dosfstools neovim man-db man-pages texinfo
+pacman -S --needed --noconfirm base-devel linux-lts linux-lts-headers e2fsprogs dosfstools neovim man-db man-pages texinfo $pkgs
 
 echo "what should the name of the your user be?"
 

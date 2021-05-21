@@ -68,7 +68,9 @@ read pkgs
 
 echo "installing additional packages..." && sleep 5
 
-pacman -S --needed --noconfirm base-devel linux-lts linux-lts-headers e2fsprogs dosfstools neovim man-db man-pages texinfo $pkgs
+krnl="$(expac --timefmt='%Y-%m-%d %T' '%l\t%n' | sort -n | awk '{print $3}' | grep '^linux' | sed '/linux-firmware\|.-headers/d' | tail -n1)"
+
+pacman -S --needed --noconfirm base-devel $krnl-headers man-db man-pages texinfo $pkgs
 
 echo "what should the name of the your user be?"
 

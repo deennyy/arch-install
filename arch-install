@@ -70,7 +70,7 @@ read pkgs
 
 echo "installing additional packages..." && sleep 5
 
-pacman -S expac
+pacman -S --needed --noconfirm expac
 
 # this gets the latest installed kernel package so we can install its headers package
 # yes ik this is probably wonky asf but its what i could come up with :D

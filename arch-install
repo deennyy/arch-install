@@ -79,7 +79,7 @@ krnl="$(expac --timefmt='%Y-%m-%d %T' '%l\t%n' | sort -n | awk '{print $3}' | gr
 
 pacman -S --needed --noconfirm base-devel $krnl-headers man-db man-pages texinfo $pkgs
 
-echo "what should the name of the your user be?"
+echo "what should the name of your user be?"
 
 read name
 

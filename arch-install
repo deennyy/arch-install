@@ -4,6 +4,8 @@ echo "this script will automatically set up arch (UEFI), mostly following the of
 
 echo "this script should be run after you've chroot-ed into your install and have done all previous steps from the install guide"
 
+sleep 15
+
 timedatectl list-timezones | column
 
 echo "choose a timezone from the list above, format: Region/City"

@@ -51,25 +51,25 @@ elif [ "$cpu" = "AuthenticAMD" ]; then
 fi
 
 if [ -d /sys/firmware/efi/efivars ]; then
-	echo "where is the ESP mounted? example: /boot/efi"
+    echo "where is the ESP mounted? example: /boot/efi"
 
-	read esp
+    read esp
 
-	echo "installing grub..." && sleep 3
+    echo "installing grub..." && sleep 3
 
-	pacman -S --needed --noconfirm grub efibootmgr dosfstools
+    pacman -S --needed --noconfirm grub efibootmgr dosfstools
 
-	grub-install --target=x86_64-efi --efi-directory=$esp --bootloader-id=GRUB
+    grub-install --target=x86_64-efi --efi-directory=$esp --bootloader-id=GRUB
 else
-	echo "which disk should GRUB be installed to? example: /dev/sda"
+    echo "which disk should GRUB be installed to? example: /dev/sda"
 
-	read dsk
+    read dsk
 
-	echo "installing grub..." && sleep 3
+    echo "installing grub..." && sleep 3
 
-	pacman -S --needed --noconfirm grub
+    pacman -S --needed --noconfirm grub
 
-	grub-install --target=i386-pc $dsk
+    grub-install --target=i386-pc $dsk
 fi
 
 grub-mkconfig -o /boot/grub/grub.cfg

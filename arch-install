@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "this script will automatically set up arch (UEFI), mostly following the official install guide, but with some tweaks/packages of mine installed too"
+echo "this script will automatically install arch, mostly following the official install guide, but with some tweaks/packages of mine installed too"
 
 echo "this script should be run after you've chroot-ed into your install and have done all previous steps from the install guide"
 
@@ -54,15 +54,27 @@ else
     echo "accepted answers are intel/amd"
 fi
 
-echo "where is the ESP mounted? example: /boot/efi"
+if [ -d /sys/firmware/efi/efivars ]; then
+	echo "where is the ESP mounted? example: /boot/efi"
 
-read esp
+	read esp
 
-echo "installing grub..." && sleep 5
+	echo "installing grub..." && sleep 5
 
-pacman -S --needed --noconfirm grub efibootmgr
+	pacman -S --needed --noconfirm grub efibootmgr
 
-grub-install --target=x86_64-efi --efi-directory=$esp --bootloader-id=GRUB
+	grub-install --target=x86_64-efi --efi-directory=$esp --bootloader-id=GRUB
+else
+	echo "which disk should GRUB be installed to? example: /dev/sda"
+
+	read dsk
+
+	echo "installing grub..." && sleep 5
+
+	pacman -S --needed --noconfirm grub
+
+	grub-install --target=i386-pc $dsk
+fi
 
 grub-mkconfig -o /boot/grub/grub.cfg
 

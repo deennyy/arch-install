@@ -42,16 +42,12 @@ echo "what should the root password be?"
 
 passwd
 
-echo "what cpu do you have? (intel/amd)"
+cpu="$(cat /proc/cpuinfo | grep vendor_id | tail -n1 | awk '{print $3}')"
 
-read cpu
-
-if [ "$cpu" = "intel" ]; then
+if [ "$cpu" = "GenuineIntel" ]; then
     pacman -S --needed --noconfirm intel-ucode
-elif [ "$cpu" = "amd" ]; then
+elif [ "$cpu" = "AuthenticAMD" ]; then
     pacman -S --needed --noconfirm amd-ucode
-else
-    echo "accepted answers are intel/amd"
 fi
 
 if [ -d /sys/firmware/efi/efivars ]; then

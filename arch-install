@@ -42,7 +42,7 @@ echo "what should the root password be?"
 
 passwd
 
-cpu="$(awk '/vendor_id/ {print $3}' /proc/cpuinfo | tail -n1)"
+cpu="$(awk 'NR==2{print $3}' /proc/cpuinfo)"
 
 if [ "$cpu" = "GenuineIntel" ]; then
     pacman -S --needed --noconfirm intel-ucode

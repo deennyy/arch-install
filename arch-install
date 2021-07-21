@@ -78,7 +78,7 @@ fi
 
 grub-mkconfig -o /boot/grub/grub.cfg
 
-echo "list any additional packages you want installed in a space separated list, e.g. htop neofetch ..."
+echo "list any additional packages you want installed in a space separated list, example: htop neofetch ..."
 
 read pkgs
 

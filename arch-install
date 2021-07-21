@@ -87,7 +87,7 @@ pacman -S --needed --noconfirm expac
 # this gets the latest installed kernel package so we can install its headers package
 # yes ik this is probably wonky asf but its what i could come up with :D
 
-krnl="$(expac --timefmt='%Y-%m-%d %T' '%l\t%n' | sort -n | awk '{print $3}' | grep '^linux' | sed '/linux-firmware\|.-headers/d' | tail -n1)"
+krnl="$(expac --timefmt='%Y-%m-%d %T' '%l\t%n' | sort -n | awk '$3 ~ /^linux/ ~ !/firmware|headers/ {print $3}' | tail -n1)"
 
 pacman -S --needed --noconfirm base-devel $krnl-headers man-db man-pages texinfo $pkgs
 
